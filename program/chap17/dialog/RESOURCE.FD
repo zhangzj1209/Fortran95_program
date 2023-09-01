@@ -1,0 +1,11 @@
+!MS$FREEFORM
+! Microsoft Developer Studio generated include file.
+! Used by resource.rc
+!
+      integer, parameter :: IDD_INPUT                       = 101
+      integer, parameter :: IDC_Y_MAX                       = 1000
+      integer, parameter :: IDC_Y_MIN                       = 1001
+      integer, parameter :: IDC_X_MAX                       = 1002
+      integer, parameter :: IDC_X_MIN                       = 1003
+      integer, parameter :: IDC_LINES                       = 1004
+      integer, parameter :: IDC_RESET                       = 1006

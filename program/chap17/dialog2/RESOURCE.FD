@@ -1,0 +1,12 @@
+!MS$FREEFORM
+! Microsoft Developer Studio generated include file.
+! Used by resource.rc
+!
+      integer, parameter :: IDD_SETCOLOR                    = 101
+      integer, parameter :: IDC_SCROLLBAR1                  = 1000
+      integer, parameter :: IDC_SCROLLBAR2                  = 1001
+      integer, parameter :: IDC_SCROLLBAR3                  = 1002
+      integer, parameter :: IDC_VALUE_RED                   = 1003
+      integer, parameter :: IDC_VALUE_GREEN                 = 1004
+      integer, parameter :: IDC_VALUE_BLUE                  = 1005
+      integer, parameter :: IDC_STATIC                      = 65535

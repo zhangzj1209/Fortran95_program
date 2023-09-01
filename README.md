@@ -11,13 +11,13 @@
 - 第08章 [函数](./program/chap08) [[习题解答](./ans/chap08)]
 - 第09章 [文件](./program/chap09) [[习题解答](./ans/chap09)]
 - 第10章 [指针](./program/chap10) [[习题解答](./ans/chap10)]
-- 第11章 [MODULE](./program/chap11) [[习题解答](./ans/chap11)]
+- 第11章 [MODULE及面向对象](./program/chap11) [[习题解答](./ans/chap11)]
 - 第12章 [编译器使用进阶](./program/chap12)
 - 第13章 [电脑绘图](./program/chap13)
 - 第14章 [数值方法](./program/chap14)
 - 第15章 [数据结构与算法](./program/chap15)
 - 第16章 [IMSL函数库](./program/chap16)
-- 第17章 [Visual Fortran扩展功能](./program/chap17)
+- 第17章 [Visual Fortran扩充功能](./program/chap17)
 
 ## 电子书
 - 第01~16章 [[PDF](./book/Fortran95程序设计.pdf)]

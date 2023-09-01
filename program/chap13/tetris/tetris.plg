@@ -1,0 +1,40 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: tetris - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPB.tmp" with contents
+[
+/compile_only /nologo /warn:nofileopt /module:"Release/" /object:"Release/" 
+"E:\work\f95\program\chap13\tetris\utility.f90"
+"E:\work\f95\program\chap13\tetris\global.f90"
+"E:\work\f95\program\chap13\tetris\game.f90"
+"E:\work\f95\program\chap13\tetris\main.f90"
+]
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPC.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/tetris.pdb" /machine:I386 /out:"Release/tetris.exe" 
+.\Release\game.obj
+.\Release\global.obj
+.\Release\main.obj
+.\Release\utility.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPC.tmp"
+<h3>Output Window</h3>
+Compiling Fortran...
+E:\work\f95\program\chap13\tetris\utility.f90
+E:\work\f95\program\chap13\tetris\global.f90
+E:\work\f95\program\chap13\tetris\game.f90
+E:\work\f95\program\chap13\tetris\main.f90
+Linking...
+
+
+
+<h3>Results</h3>
+tetris.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

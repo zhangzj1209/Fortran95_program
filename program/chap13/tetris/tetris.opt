@@ -1,0 +1,1413 @@
+–œ‡°?                >  ?	                         ?ˇˇ    ?ˇˇ        ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ?ˇˇ                      	   
+      ?ˇˇ                           ?ˇˇ                           ?ˇˇI   "   #   $   %   &   '   (   )   *   ?ˇˇ,   -   .   /   0   1   2   3   4   ?ˇˇ6   7   8   9   :   ;   <   =   >   ?ˇˇ@   A   B   C   D   E   F   G   H   ?ˇˇ?ˇˇK   L   M   N   O   P   Q   R   S   ?ˇˇU   V   W   X   Y   Z   [   \   ]   ?ˇˇ_   `   a   b   c   d   e   f   g   ?ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇR o o t   E n t r y                                               ˇˇˇˇˇˇˇˇ                               ≥Kv…¡?ˇˇ        W o r k s p a c e   S t a t e                                           ˇˇˇˇ                                              B r o w s e r                                                       
+   ˇˇˇˇ                                              E d i t o r                                                         ˇˇˇˇˇˇˇˇ                                                   tetrisE:\xzl\chap13\tetris\tetris.dsp   meter :: blocktype = 7
+
+  type color3i
+    integer r,g,b
+  end type
+  ! √ø÷÷∑ΩøÈµƒ—’…´  
+  type(color3i) :: color(blocktype) = (/ color3i(0,0,255),&
+										 color3i(0,255,0),&
+										 color3i(0,255,255),&
+										 color3i(255,0,0),&
+										 color3i(255,0,255),&
+										 color3i(255,255,0),&
+										 color3i(255,255,255) /)
+  type block
+    integer name
+	integer rot_shift
+    integer index
+	integer x,y, backup_x
+	integer :: db(4,4,4)
+  end type
+  
+  type(block), target, save :: blocks(blocktype)  
+  !∏˜÷÷∑ΩøÈµƒ–Œ◊¥–≈œ¢
+  integer, target :: b1(4,4,1) = (/ 0,0,0,0,& ! type 1
+							        0,0,0,0,&
+								    1,1,0,0,&
+								    1,1,0,0 /) 
+
+  integer, target :: b2(4,4,2) = (/ 0,0,0,0,& ! type 1
+									2,0,0,0,& 
+									2,2,0,0,&
+									0,2,0,0,& 
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									0,2,2,0,&
+									2,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 ¯h                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              g  ?             2               ?                ,               ?                               ?                               ?  ?              h               ?                              i(0,255,255),&
+										 color3i(255,0,0),&
+										 color3i(255,0,255),&
+										 color3i(255,255,0),&
+										 color3i(255,255,255) /)
+  type block
+    integer name
+	integer rot_shift
+    integer index
+	integer x,y, backup_x
+	integer :: db(4,4,4)
+  end type
+  
+  type(block), target, save :: blocks(blocktype)  
+  !∏˜÷÷∑ΩøÈµƒ–Œ◊¥–≈œ¢
+  integer, target :: b1(4,4,1) = (/ 0,0,0,0,& ! type 1
+							        0,0,0,0,&
+								    1,1,0,0,&
+								    1,1,0,0 /) 
+
+  integer, target :: b2(4,4,2) = (/ 0,0,0,0,& ! type 1
+									2,0,0,0,& 
+									2,2,0,0,&
+									0,2,0,0,& 
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									0,2,2,0,&
+									2,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 ¯h                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   MLJL 12.C:\Projects\VC++\MPEGEditor\MPEGEditorView.cpp       if(m_nTotalNum>MRect9C:\Cwin95\Desktop\debug mirascan 3.0 1020\CPreviewDlg.cpp?     GetFixedSizeData$E:\VC50_Proj\970703\Acerscsictrl.cpp1      SetCaptureValue0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c>     ReadSessionConfig0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c$      ConfigCapture0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ConfigVideo0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c~      clvpSystemInit2E:\VC50_Proj\H324_0813\Src\Linktel\Main\Clvphone.c      //j~+1*C:\Cwin95\Desktop\∑s∏ÍÆ∆ß®\CPreviewDlg.cpp?  *   
+ThrowCards+G:\Yann\home\AcerPrj\NetSoha\DeskWizard.cpp?     SessionDlgInit0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ReadBlockDataD:\VC50_Proj\S310\S310Ctrl.cpp?      InqDataE:\VC50_Proj\S310\S310Ctrl.h       SessionDlgSetting0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.cW	     ,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 ¯h                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 W o r k s p a c e   W i n d o w                                 "       ˇˇˇˇ                                    !          S o u r c e _ C o n t r o l _ I n f o                           ( ˇˇˇˇˇˇˇˇˇˇˇˇ                                    +          I P I _ t e t r i s                                               ˇˇˇˇˇˇˇˇˇˇˇˇ                                    5          I P I _                                                         
+  ˇˇˇˇˇˇˇˇˇˇˇˇ                                    ?            tetris	ClassView<EOR><EOR><EOR>tetris classes<EOR>tetris classes<EOR>FileView<EOR> Workspace 'tetris': 1 project(s)tetris filesSource FilesExternal Dependencies<EOR>
+global.f90<EOR>
+global.f90<EOR>tetris files<EOR><EOR>FileView<EOR>Src\Linktel\Main\Config.c>     ReadSessionConfig0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c$      ConfigCapture0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ConfigVideo0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c~      clvpSystemInit2E:\VC50_Proj\H324_0813\Src\Linktel\Main\Clvphone.c      //j~+1*C:\Cwin95\Desktop\∑s∏ÍÆ∆ß®\CPreviewDlg.cpp?  *   
+ThrowCards+G:\Yann\home\AcerPrj\NetSoha\DeskWizard.cpp?     SessionDlgInit0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ReadBlockDataD:\VC50_Proj\S310\S310Ctrl.cpp?      InqDataE:\VC50_Proj\S310\S310Ctrl.h       SessionDlgSetting0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.cW	     ,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 ¯h                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 A     <not controlled>d:\prj\tetris  tetrislasses<EOR>tetris classes<EOR>FileView<EOR> Workspace 'tetris': 1 project(s)tetris filesSource FilesExternal Dependencies<EOR>
+global.f90<EOR>
+global.f90<EOR>tetris files<EOR><EOR>FileView<EOR>Src\Linktel\Main\Config.c>     ReadSessionConfig0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c$      ConfigCapture0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ConfigVideo0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c~      clvpSystemInit2E:\VC50_Proj\H324_0813\Src\Linktel\Main\Clvphone.c      //j~+1*C:\Cwin95\Desktop\∑s∏ÍÆ∆ß®\CPreviewDlg.cpp?  *   
+ThrowCards+G:\Yann\home\AcerPrj\NetSoha\DeskWizard.cpp?     SessionDlgInit0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ReadBlockDataD:\VC50_Proj\S310\S310Ctrl.cpp?      InqDataE:\VC50_Proj\S310\S310Ctrl.h       SessionDlgSetting0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.cW	     ,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 ¯h                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 `     tetris - Win32 Release
+tetris.dsp  CProjecttetris - Win32 Releasetetris - Win32 Release   Ä       ?      ?       tetris - Win32 Debug   Ä       ?      ?       SSBR   CTargetItemtetris - Win32 Release    tetris - Win32 Debug    SSBRSource Files 
+ CProjGroupSSBRDJWHeader Files 
+ CProjGroupSSBRDJWResource Files 
+ CProjGroupSSBRDJWdep  CDependencyContainerSSBRDJWdep  CDependencyContainerSSBR
+global.mod  CDependencyFileSSBRUTILITY.mod  CDependencyFileSSBRGAME.MOD  CDependencyFileSSBRDJWDJWDJWDesktop\∑s∏ÍÆ∆ß®\CPreviewDlg.cpp?  *   
+ThrowCards+G:\Yann\home\AcerPrj\NetSoha\DeskWizard.cpp?     SessionDlgInit0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ReadBlockDataD:\VC50_Proj\S310\S310Ctrl.cpp?      InqDataE:\VC50_Proj\S310\S310Ctrl.h       SessionDlgSetting0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.cW	     ,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 ¯h                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 `       ˇˇˇˇ                ˇˇ  tris.dsp  CProjecttetris - Win32 Releasetetris - Win32 Release   Ä       ?      ?       tetris - Win32 Debug   Ä       ?      ?       SSBR   CTargetItemtetris - Win32 Release    tetris - Win32 Debug    SSBRSource Files 
+ CProjGroupSSBRDJWHeader Files 
+ CProjGroupSSBRDJWResource Files 
+ CProjGroupSSBRDJWdep  CDependencyContainerSSBRDJWdep  CDependencyContainerSSBR
+global.mod  CDependencyFileSSBRUTILITY.mod  CDependencyFileSSBRGAME.MOD  CDependencyFileSSBRDJWDJWDJWDesktop\∑s∏ÍÆ∆ß®\CPreviewDlg.cpp?  *   
+ThrowCards+G:\Yann\home\AcerPrj\NetSoha\DeskWizard.cpp?     SessionDlgInit0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ReadBlockDataD:\VC50_Proj\S310\S310Ctrl.cpp?      InqDataE:\VC50_Proj\S310\S310Ctrl.h       SessionDlgSetting0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.cW	     ,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 ¯h                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 C l a s s V i e w   W i n d o w                                 " ˇˇˇˇˇˇˇˇˇˇˇˇ                                    J          D e b u g g e r                                                   ˇˇˇˇˇˇˇˇˇˇˇˇ                                    T          D o c u m e n t s                                                	      ˇˇˇˇ                                    ^                                                                              ˇˇˇˇˇˇˇˇˇˇˇˇ                                                     ˇˇ  CClsFldSlobtetris    is.dsp  CProjecttetris - Win32 Releasetetris - Win32 Release   Ä       ?      ?       tetris - Win32 Debug   Ä       ?      ?       SSBR   CTargetItemtetris - Win32 Release    tetris - Win32 Debug    SSBRSource Files 
+ CProjGroupSSBRDJWHeader Files 
+ CProjGroupSSBRDJWResource Files 
+ CProjGroupSSBRDJWdep  CDependencyContainerSSBRDJWdep  CDependencyContainerSSBR
+global.mod  CDependencyFileSSBRUTILITY.mod  CDependencyFileSSBRGAME.MOD  CDependencyFileSSBRDJWDJWDJWDesktop\∑s∏ÍÆ∆ß®\CPreviewDlg.cpp?  *   
+ThrowCards+G:\Yann\home\AcerPrj\NetSoha\DeskWizard.cpp?     SessionDlgInit0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.c?      ReadBlockDataD:\VC50_Proj\S310\S310Ctrl.cpp?      InqDataE:\VC50_Proj\S310\S310Ctrl.h       SessionDlgSetting0E:\VC50_Proj\H324_0813\Src\Linktel\Main\Config.cW	     ,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 0k                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            @	Control-C        @Control-Break         ÄDatatype Misalignment        ?Access Violation        ?In Page Error        ?Illegal Instruction        ?Array Bounds Exceeded        ?Float Denormal Operand        ?Float Divide by Zero        ?Float Inexact Result        ?Float Invalid Operation        ?Float Overflow        ?Float Stack Check        ?Float Underflow        ?No Memory      %  ?Noncontinuable Exception      &  ?Invalid Disposition        ?Integer Divide by Zero        ?Integer Overflow        ?Privileged Instruction        ?Stack Overflow      5 ?DLL Not Found      B ?DLL Initialization Failed      ~ m?Module Not Found       m?Procedure Not Found        ?Invalid Handle       csm?Microsoft C++ Exception            GAME_data_Mp_Board(:,25)Watch1 CurrentBlockWatch2  Watch3  Watch4        cW	     ,2,0,0 /)
+
+  integer, target :: b3(4,4,2) = (/ 0,0,0,0,& ! type 1
+							        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 0k                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     X              Fortran Free  ‡j pl 8m  n »n êo Xp  q Ëq ∞r xs @t u ®k                                               (     (           
+.\game.f90&{3486698D-49EB-11CF-BF46-00AA004C12E2}  ,          ˇˇˇˇˇˇˇˇ?ˇˇ?ˇˇB   B   8  D                Fortran Free  ‡j pl 8m  n »n êo Xp  q Ëq ∞r xs @t u ®k                                                                   
+.\main.f90&{3486698D-49EB-11CF-BF46-00AA004C12E2}  ,          ˇˇˇˇˇˇˇˇ?ˇˇ?ˇˇ        D                Fortran Free  ‡j pl 8m  n »n êo Xp  q Ëq ∞r xs @t u ®k                                               	   
+   	   
+           .\utility.f90&{3486698D-49EB-11CF-BF46-00AA004C12E2}  ,          ˇˇˇˇˇˇˇˇ?ˇˇ?ˇˇ        ?  D                 Fortran Free  ‡j pl 8m  n »n êo Xp  q Ëq ∞r xs @t u ®k                                                                       .\global.f90&{3486698D-49EB-11CF-BF46-00AA004C12E2}  ,         ˇˇˇˇˇˇˇˇ?ˇˇ?ˇˇ,   ,   "  D        0,3,0,0,&
+                                    3,3,0,0,&
+									3,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									3,3,0,0,&
+									0,3,3,0 /)
+
+  integer, target :: b4(4,4,2) = (/ 4,0,0,0,& ! type 1
+									4,0,0,0,&
+									4,0,0,0,&
+									4,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,0,0,&
+									4,4,4,4 /)
+
+  integer, target :: b5(4,4,4) = (/ 0,0,0,0,& ! type 1
+									5,0,0,0,&
+									5,5,0,0,&
+									5,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,& 
+									5,5,5,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 3
+									0,5,0,0,&
+									5,5,0,0,&
+									0,5,0,0,&
+
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									0,5,0,0,&
+									5,5,5,0 /)
+
+  integer, target :: b6(4,4,4) = (/ 0,0,0,0,& ! type 1
+									6,6,0,0,&
+									0,6,0,0,&
+									0,6,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									0,0,6,0,&
+									6,6,6,0,&
+
+									0,0,0,0,& ! type 3
+									6,0,0,0,&
+									6,0,0,0,&
+									6,6,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									6,6,6,0,&
+									6,0,0,0 /)	
+
+  integer, target :: b7(4,4,4) = (/ 0,0,0,0,& ! type 1
+									7,7,0,0,&
+									7,0,0,0,&
+									7,0,0,0,&
+
+									0,0,0,0,& ! type 2
+									0,0,0,0,&
+									7,7,7,0,&
+									0,0,7,0,&
+
+									0,0,0,0,& ! type 3
+									0,7,0,0,&
+									0,7,0,0,&
+									7,7,0,0,&
+									
+									0,0,0,0,& ! type 4
+									0,0,0,0,&
+									7,0,0,0,&
+									7,7,7,0 /)	
+
+contains
+  ! …Ë∂®∏˜÷÷∑ΩøÈµƒ–≈œ¢
+  subroutine InitBlock()
+    blocks(1).name = 1
+	blocks(1).rot_shift = 2
+    blocks(1).db(:,:,1) = b1(:,:,1)
+    blocks(1).db(:,:,2) = b1(:,:,1)
+    blocks(1).db(:,:,3) = b1(:,:,1)
+    blocks(1).db(:,:,4) = b1(:,:,1)
+
+    blocks(2).name = 2
+	blocks(2).rot_shift = 3
+	blocks(2).db(:,:,1) = b2(:,:,1)
+	blocks(2).db(:,:,2) = b2(:,:,2)
+	blocks(2).db(:,:,3) = b2(:,:,1)
+	blocks(2).db(:,:,4) = b2(:,:,2)
+
+    blocks(3).name = 3
+	blocks(3).rot_shift = 3
+	blocks(3).db(:,:,1) = b3(:,:,1)
+	blocks(3).db(:,:,2) = b3(:,:,2)
+	blocks(3).db(:,:,3) = b3(:,:,1)
+	blocks(3).db(:,:,4) = b3(:,:,2)
+
+    blocks(4).name = 4
+	blocks(4).rot_shift = 4
+	blocks(4).db(:,:,1) = b4(:,:,1)
+	blocks(4).db(:,:,2) = b4(:,:,2)
+	blocks(4).db(:,:,3) = b4(:,:,1)
+	blocks(4).db(:,:,4) = b4(:,:,2)
+
+    blocks(5).name = 5
+	blocks(5).rot_shift = 3
+	blocks(5).db = b5
+
+	blocks(6).name = 6
+	blocks(6).rot_shift = 3
+	blocks(6).db = b6
+
+	blocks(7).name = 7
+	blocks(7).rot_shift = 3
+	blocks(7).db = b7
+  end subroutine
+
+end moduley-1)*BY + BoundY + GridSize
+	call sglColor3i( color(c)%r, color(c)%g, color(c)%b )
+	call sglFilledRect( startx, starty, startx+w, starty+h )
+  end subroutine
+
+end module
+          H?  x4  V                                                                                                                                                                                                                                 *  x4 0k                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

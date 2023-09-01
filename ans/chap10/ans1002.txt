@@ -1,0 +1,11 @@
+integer, target :: a = 1
+integer, target :: b = 2
+integer, target :: c = 3
+integer, pointer :: p
+p=>a
+write(*,*) p  ! 1
+p=>b
+write(*,*) p  ! 2
+p=>c
+p=5
+write(*,*) c  ! 5

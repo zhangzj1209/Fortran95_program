@@ -1,0 +1,13 @@
+integer(kind=4) :: a ! 4 bytes
+real(kind=4) :: b    ! 4 bytes
+real(kind=8) :: c    ! 8 bytes
+character(len=10) :: str       ! 10 bytes
+integer(kind=4), pointer :: pa ! 4 bytes
+real(kind=4), pointer :: pb    ! 4 bytes
+real(kind=8), pointer :: pc    ! 4 bytes
+character(len=10), pointer :: pstr  ! 4 bytes
+type student
+  integer Chinese, English, Math
+end type
+type(student) :: s  ! 12 bytes   
+type(student), pointer :: ps ! 4 bytes

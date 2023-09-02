@@ -196,64 +196,62 @@ print *，"text"        ! 只能用于屏幕输出
 
 （1）六个关系运算符
 
-![](https://pic3.zhimg.com/v2-e108f7b2fc9b31e21a6f88d83574db3e_b.png)
+| 等于 | 不等于 | 大于 | 大于等于 | 小于 | 小于等于 | 适用标准 |
+| - | - | - | - | - | - | - |
+| == | /= | > | >= | < | <= | Fortran 90用法 |
+| .EQ. | .NE. | .GT. | .GE. | .LT. | .LE. | Fortran 77用法 |
 
 （2）五大逻辑运算符
 
-![](https://pic1.zhimg.com/v2-15be5b1ebd95afae778c33991b8da804_b.png)
+| 逻辑与 | 逻辑或 | 逻辑非 | 逻辑等价 | 逻辑不等价 |
+| - | - | - | - | - |
+| .AND. | .OR. | .NOT. | .EQV. | .NEQV. |
 
-> \! 仅.NOT.连接一个表达式，其余左右两边都要有表达式（可以是logical类型的变量）  
-> \!.EQV.：当两边逻辑运算值相同时为真， .NEQV.：当两边逻辑运算值不同时为真
+> *注意：* 仅.NOT.连接一个表达式，其余左右两边都要有表达式（可以是logical类型的变量）。  
+> *注意：* .EQV.：当两边逻辑运算值相同时为真； .NEQV.：当两边逻辑运算值不同时为真。
 
-  
+#### *3-2、IF*
 
-_2、IF_
-
-（1）基本 ：
-
+（1）基本：
 ```fortran
-if(逻辑判断式) then
-   ……
+if (逻辑判断式) then
+  ......
 end if 
 ```
 
-如果then后面只有一句，可写为
-
+如果then后面只有一句，可写为：
 ```fortran
-if(逻辑判断式) …… !then和end if可省略
+if (逻辑判断式) ......      ! then 和 end if 可省略
 ```
 
-\(2\) 多重判断：
-
+（2）多重判断：
 ```fortran
-if（条件1） then
-   ……
-else if（条件2）then
-   ……
-else if（条件3）then
-   ……
+if (条件1) then
+  ......
+else if (条件2) then
+  ......
+else if (条件3) then
+  ......
 else
-   ……
+  ......
 end if
 ```
 
-\(3\) 嵌套：
-
+（3）嵌套：
 ```fortran
-if(逻辑判断式) then
-   if(逻辑判断式) then
-      if(逻辑判断式) then
-      else if(逻辑判断式) then
-         ……
-      else
-         …… 
-      end if 
-   end if
+if (逻辑判断式) then
+  if (逻辑判断式) then
+    if (逻辑判断式) then
+    else if (逻辑判断式) then
+      ......
+    else
+      ...... 
+    end if 
+  end if
 end if
 ```
 
-\(4\) 算术判断：
-
+（4） 算术判断：
 ```fortran
       program example
 
@@ -262,9 +260,9 @@ end if
 
       write (*,*) "input a number"
       read (*,*) c
-      if(c) 10,20,30 !//10,20和30为行代码,根据c小于/等于/大于0，执行10/20/30行的程
+      if(c) 10,20,30      ! 10, 20和30为行代码，根据c小于/等于/大于0，执行10/20/30行的程序
  10   write (*,*) "A"
-      goto 40 !//goto可实现跳到任意前面或后面的行代码处，但用多了破坏程序结
+      goto 40             ! goto可实现跳到任意前面或后面的行代码处，但用多了破坏程序结构
  20   write (*,*) "B"
       goto 40
  30   write (*,*) "C"
@@ -274,66 +272,53 @@ end if
       end program example
 ```
 
-  
-
-_3、SELECT CASE_
+#### *3-3、SELECT CASE*  
 
 类似于C的switch语句
 
 ```fortran
-select case(变量)
-case（数值1） !//比如case(1:5)代表1<=变量<=5会执行该模块
-   ……  !//case（1，3，5）代表变量等于1或3或5会执行该模块
-case（数值2） !//括号中数值只能是integer,character或logical型常量，不能real型
-   ……
+select case (变量)
+case (数值1)      ! 比如case (1:5) 代表1<=变量<=5会执行该模块
+  ......          ! case (1,3,5) 代表变量等于1或3或5会执行该模块
+case (数值2)      ! 括号中数值只能是integer, character或logical型常量，不能real型
+  ......
 case default
-   ……
-end case
+  ......
+end select
 ```
 
-  
-
-_4、PAUSE, CONTINUE_
+#### *3-4、PAUSE, CONTINUE*  
 
 > pause暂停程序执行，按enter可继续执行  
-> continue貌似没什么用处，可用作封装程序的标志
+> continue没有实际用途，可用作封装程序的标志
 
-  
-
-## 四、循环
+### 4、循环
 
 （1）DO
-
 ```fortran
-do counter=初值, 终值, 增/减量 !//counter的值从初值到终值按增/减量变，
-   …… !//counter每取一个值对应着一次循环。增/减量不写则认为1
-   …… 
-   …… !//循环主体也没有必要用{}
-   …… 
+do counter=初值, 终值, 增/减量      ! counter的值从初值到终值按增/减量变，
+  ......                            ! counter每取一个值对应着一次循环。增/减量不写则认为1
+  ......                            ! 循环主体也没有必要用{}
 end do
 ```
 
 > Fortran 77中不是用end do来终止，而是下面这样子：
-
 ```fortran
 do 循环终行行代码 counter=初值, 终值, 增/减量 
-   …… 
-行代码 …… !//这是do的最后一行
+  ......
+行代码 ......      ! 这是do的最后一行
 ```
 
 （2）DO WHILE
-
 ```fortran
-do while(逻辑运算)
-   …… 
-   …… 
+do while (逻辑运算)
+  ......
 end do
 ```
 
-> 类似于C中的while\(逻辑运算\) \{……\}。  
-> 一开始那个计算圆柱表面积的程序中，应该也算是这一类。不过它是通过内部的if语句来控制循。看来也是可以的，不过在这本书上没看到这样写。其实应该也可以归于下面这种。
+> 类似于C中的while\(逻辑运算\) \{......\}。  
 
-（3）没看到和C里面的do\{……\}while\(逻辑运算\); 相对应的循环语句.
+（3）没看到和C里面的do\{......\}while\(逻辑运算\); 相对应的循环语句.
 
 > 不过可以这样，保证至少做一循环：
 

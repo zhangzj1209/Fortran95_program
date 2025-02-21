@@ -104,7 +104,7 @@
 
 - **逻辑判断LOGICAL**
   ```fortran
-  logical*2 :: d=.ture.      ! (等价于 logical(2) :: d=.ture.)
+  logical*2 :: d=.true.      ! (等价于 logical(2) :: d=.true.)
   ```
 
 - **自定义类型TYPE**：类似于C中的`struct`
